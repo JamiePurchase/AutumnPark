@@ -1,0 +1,255 @@
+<html>
+	<head>
+		<title>Autumn Park Map Generator</title>
+		<style>
+			body
+			{
+				background-color: #000000;
+			}
+			.button
+			{
+				background-color: #D7ED7E;
+    			border: 1px solid;
+				border-color: #000000;
+    			border-radius: 15px;
+			}
+			.button:hover
+			{
+				cursor: pointer; cursor: hand;
+			}
+			.buttonText
+			{
+				color: #000000;
+				font-size: 22px;
+			}
+			.header
+			{
+				font-size: 28px;
+			}
+			input
+			{
+				background-color: #ffffff;
+				border: 1px solid;
+				border-color: #000000;
+				width: 150px;
+			}
+			.panel
+			{
+				background-color: #ffffff;
+    			border: 5px solid;
+				border-color: #BAE11F;
+    			border-radius: 25px;
+			}
+			select
+			{
+				background-color: #ffffff;
+				border: 1px solid;
+				border-color: #000000;
+				width: 150px;
+			}
+		</style>
+		<script>			
+			function compile()
+			{
+				var boxWide = document.getElementById("optionWide");
+				var boxHigh = document.getElementById("optionHigh");
+				if(boxWide.value.length>0 && boxHigh.value.length>0)
+				{
+					compileScript();
+				}
+				else
+				{
+					if(boxWide.value.length<1)
+					{
+						boxWide.value = "";
+						boxWide.style = "background-color: #DD2211;";
+					}
+					if(boxHigh.value.length<1)
+					{
+						boxHigh.value = "";
+						boxHigh.style = "background-color: #DD2211;";
+					}
+				}
+			}
+			
+			function compileScript()
+			{
+				var boardName = document.getElementById("optionName").value;
+				var boardDesc = document.getElementById("optionDesc").value;
+				var boardFill = document.getElementById("optionFill").value;
+				var boardType = document.getElementById("optionType").value;
+				var boardWide = document.getElementById("optionWide").value;
+				var boardHigh = document.getElementById("optionHigh").value;
+				var script = "// Details\n";
+				script = script + 'Game.world.setName("' + boardName + '");\n';
+				script = script + 'Game.world.setLocation("' + boardDesc + '");\n\n';
+				script = script + "// Dimensions\n";
+				script = script + "Game.world.setGridWidth(" + boardWide + ");\n";
+				script = script + "Game.world.setGridHeight(" + boardHigh + ");\n\n";
+				script = script + "// Tiles\n";
+				var x = 1;
+				var y = 1;
+				for(y=1;y<=boardHigh;y++)
+				{
+					for(x=1;x<=boardWide;x++)
+					{
+						script = script + 'Game.world.setTile(' + x + ', ' + y + ', "' + boardFill + '", ' + boardType + ');\n';
+					}
+				}
+				document.getElementById("scriptBox").value = script;
+			}
+			
+			function optionHighFocus()
+			{
+				document.getElementById("optionHigh").style = "background-color: #ffffff;";
+			}
+			
+			function optionWideFocus()
+			{
+				document.getElementById("optionWide").style = "background-color: #ffffff;";
+			}
+		</script>
+	</head>
+	<body>
+		<center>
+			<br>
+			<img src="logo.png" alt="Autumn Park Map Generator">
+			<br><br>
+			<table width="100%">
+				<tr valign="top">
+					<td width="5%">
+						&nbsp;
+					</td>
+					<td width="35%">
+						<div style="height: 400px;" class="panel">
+							<center>
+								<table width="100%">
+									<tr height="20">
+										<td width="15%" rowspan="11">&nbsp;</td>
+										<td width="20%">&nbsp;</td>
+										<td width="5%">&nbsp;</td>
+										<td width="45%">&nbsp;</td>
+										<td width="15%" rowspan="11">&nbsp;</td>
+									</tr>
+									<tr valign="top">
+										<td colspan="3" align="center">
+											<p class="header">
+												Generate Board
+											</p>
+										</td>
+									</tr>
+									<tr><td colspan="3">&nbsp;</td></tr>
+									<tr valign="top">
+										<td>
+											Board Name
+										</td>
+										<td width="10%" rowspan="8">&nbsp;</td>
+										<td>
+											<input type="text" id="optionName" placeholder="Board Name"/>
+										</td>
+									</tr>
+									<tr valign="top">
+										<td>
+											Location
+										</td>
+										<td>
+											<input type="text" id="optionDesc" placeholder="Text to display"/>
+										</td>
+									</tr>
+									<tr valign="top">
+										<td>
+											Music
+										</td>
+										<td>
+											<input type="text" id="optionTune" placeholder="Background audio"/>
+										</td>
+									</tr>
+									<tr valign="top">
+										<td>
+											Width
+										</td>
+										<td>
+											<input type="text" id="optionWide" onFocus="optionWideFocus()" placeholder="Must be 42 or more"/>
+										</td>
+									</tr>
+									<tr valign="top">
+										<td>
+											Height
+										</td>
+										<td>
+											<input type="text" id="optionHigh" onFocus="optionHighFocus()" placeholder="Must be 23 or more"/>
+										</td>
+									</tr>
+									<tr valign="top">
+										<td>
+											Tile Image
+										</td>
+										<td>
+											<select id="optionFill">
+												<option value="Grass">Grass</option>
+											</select>
+										</td>
+									</tr>
+									<tr valign="top">
+										<td>
+											Tile Solidity
+										</td>
+										<td>
+											<select id="optionType">
+												<option value="0">Normal</option>
+												<option value="1">Solid</option>
+											</select>
+										</td>
+									</tr>
+									<tr><td colspan="3">&nbsp;</td></tr>
+									<tr valign="top">
+										<td colspan="5" align="center">	
+											<a onClick="compile()" >
+												<div style="height: 50px; width: 225px;" class="button">
+													<table width="100%" height="100%">
+														<tr valign="middle">
+															<td align="center">
+																<p class="buttonText">
+																	COMPILE SCRIPT
+																</p>
+															</td>
+														</tr>
+													</table>
+												</div>
+											</a>
+										</td>
+									</tr>
+									<tr height="10">
+										<td colspan="5">&nbsp;</td>
+									</tr>
+								</table>
+							</center>
+						</div>
+					</td>
+					<td width="5%">
+						&nbsp;
+					</td>
+					<td width="50%">
+						<div style="height: 400px;" class="panel">
+							<table width="100%">
+								<tr height="20">
+									<td width="10%" rowspan="3">&nbsp;</td>
+									<td width="80%">&nbsp;</td>
+									<td width="10%" rowspan="3">&nbsp;</td>
+								</tr>
+								<tr valign="top">
+									<td align="center">
+										<textarea id="scriptBox" rows="20" cols="60"></textarea>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+					<td width="5%">
+						&nbsp;
+					</td>
+				</tr>
+			</table>
+		</center>
+	</body>
+</html>

@@ -1,0 +1,6 @@
+Paint Tools
+ - Font:	Andalus (14 bold)
+ - Brush:	Oil Brush (smallest, #000000)
+
+New Locations
+ - Nimble Keep
